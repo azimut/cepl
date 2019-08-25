@@ -93,6 +93,7 @@
                (:file "core/pipelines/gpu-lambda")
                (:file "core/pipelines/bake")
                (:file "core/textures/def")
+               (:file "core/layered-sets/layered-set")
                (:file "core/samplers/samplers")
                (:file "core/textures/textures")
                (:file "core/textures/texture-samplers")

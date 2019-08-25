@@ -127,6 +127,12 @@
 
 ;;------------------------------------------------------------
 
+(defstruct (layered-set (:constructor %make-layered-set))
+  (texture (error "") :type texture)
+  (level-num 0 :type (unsigned-byte 16)))
+
+;;------------------------------------------------------------
+
 (defstruct (gpu-array (:constructor %make-gpu-array))
   (dimensions nil :type list))
 
@@ -278,7 +284,7 @@
 ;;------------------------------------------------------------
 
 (defstruct att
-  (array nil :type (or null gpu-array-t render-buffer))
+  (array nil :type (or null gpu-array-t render-buffer layered-set))
   (blend nil :type boolean)
   (bparams nil :type (or null blending-params))
   (owned-p nil :type boolean)

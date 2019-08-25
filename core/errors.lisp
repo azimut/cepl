@@ -1027,6 +1027,7 @@ Fbo: ~a"
   missing
   fbo)
 
+
 (deferror pipeline-invalid-null-stage () (name args)
     "CEPL - An attempt was found to make a pipeline which explicitly used
 nil as the stage designator. This is only valid for :fragment stages
@@ -1036,6 +1037,28 @@ Pipeline name: ~a
 Arguments given: ~s"
   (or name "<lambda pipeline>")
   args)
+
+(deferror invalid-texture-for-layered-set () (type texture)
+    "CEPL - Textures of type ~a are not considered layered by OpenGL
+and so you cannot set layer or cube-face to null
+
+Texture: ~a"
+  type texture)
+
+(deferror unspecified-level-for-layered-set () (texture level face layer)
+    "mipmap-level must be specified when cube-face or layer are explicitly
+set to null~%~a"
+  `(texref ,texture
+           :mipmap-level ,level
+           :layer ,layer
+           :cube-face ,face))
+
+(deferror invalid-mipmap-index () (texture mipmap-requested mipmap-count)
+    "CEPL - Was asked to access mipmap level ~a from a texture.
+However it only has ~a layers.
+
+Texture: ~a"
+  mipmap-requested mipmap-count texture)
 
 ;; Please remember the following 2 things
 ;;
