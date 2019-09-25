@@ -427,6 +427,7 @@
            :%sampler-expects-depth
            :%sampler-compare
            :%sampler-anisotropy
+           :%sampler-imagine
 
            :sampler-id-box
            :sampler-shared-p

@@ -170,6 +170,7 @@
 (defstruct (sampler (:constructor %make-sampler)
                     (:conc-name %sampler-))
   (context-id 0 :type gl-id)
+  (imagine nil :type boolean) ;; bindimagetexture!
   (id-box (make-sampler-id-box) :type sampler-id-box)
   (type (error "") :type symbol)
   (texture (error "") :type texture)

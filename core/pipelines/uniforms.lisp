@@ -213,6 +213,11 @@
     ((:mat2 :float-mat2 :float-mat2-arb) 'uniform-matrix-2ft)
     ((:mat3 :float-mat3 :float-mat3-arb) 'uniform-matrix-3ft)
     ((:mat4 :float-mat4 :float-mat4-arb) 'uniform-matrix-4ft)
-    (t (if (cepl.samplers::sampler-typep (type-spec->type type)) 'uniform-sampler
+    (t (if (or (cepl.samplers::sampler-typep (type-spec->type type))
+               (eq :image-2d type);?
+               (eq :uimage-2d type);?
+               (eq :image-3d type)
+               (eq :uimage-3d type))
+           'uniform-sampler
            (error "Sorry cepl doesnt handle that type yet: ~a"
                   type)))))

@@ -92,20 +92,29 @@
          (ubo (member :ubo qualifiers))
          (ssbo (member :ssbo qualifiers))
          (assigner
-          (cond
-            (ephemeral-p nil)
-            ;;
-            (ubo (make-ubo-assigner indexes local-arg-name varjo-type glsl-name))
-            ;;
-            (ssbo (make-ssbo-assigner indexes local-arg-name varjo-type glsl-name))
-            ;;
-            (array-length (make-array-assigners indexes local-arg-name varjo-type glsl-name))
-            ;;
-            (struct-arg (make-struct-assigners indexes local-arg-name varjo-type glsl-name))
-            ;;
-            (sampler (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
-            ;;
-            (t (make-simple-assigner indexes local-arg-name varjo-type glsl-name nil)))))
+           (cond
+             (ephemeral-p nil)
+             ;;
+             (ubo (make-ubo-assigner indexes local-arg-name varjo-type glsl-name))
+             ;;
+             (ssbo (make-ssbo-assigner indexes local-arg-name varjo-type glsl-name))
+             ;;
+             (array-length (make-array-assigners indexes local-arg-name varjo-type glsl-name))
+             ;;
+             (struct-arg (make-struct-assigners indexes local-arg-name varjo-type glsl-name))
+             ;;
+             (sampler (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
+             ;;
+             ((varjo:v-typep varjo-type 'v-image-2d)
+              (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
+             ((varjo:v-typep varjo-type 'v-uimage-2d)
+              (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
+             ((varjo:v-typep varjo-type 'v-image-3d)
+              (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
+             ((varjo:v-typep varjo-type 'v-uimage-3d)
+              (make-sampler-assigner indexes local-arg-name varjo-type glsl-name))
+             ;;
+             (t (make-simple-assigner indexes local-arg-name varjo-type glsl-name nil)))))
     (when assigner
       (setf (arg-name assigner) arg-name
             (local-arg-name assigner) local-arg-name)
@@ -136,8 +145,16 @@
                   (>= ,id-name 0)
                   (< ,i-unit +unknown-uniform-int-id+)
                   (>= ,i-unit 0))
-         (unless (eq (%sampler-type ,arg-name)
-                     ,(type->type-spec type))
+         (unless (or (eq (%sampler-type ,arg-name)
+                         ,(type->type-spec type))
+                     (and (eq :sampler-2d (%sampler-type ,arg-name))
+                          (eq :image-2d ,(type->type-spec type)))
+                     (and (eq :sampler-2d (%sampler-type ,arg-name))
+                          (eq :uimage-2d ,(type->type-spec type)))
+                     (and (eq :sampler-3d (%sampler-type ,arg-name))
+                          (eq :image-3d ,(type->type-spec type)))
+                     (and (eq :sampler-3d (%sampler-type ,arg-name))
+                          (eq :uimage-3d ,(type->type-spec type))))
            (error "incorrect type of sampler passed to shader"))
          (cepl.context::set-sampler-bound
           ,*pipeline-body-context-var* ,arg-name ,i-unit))))))
