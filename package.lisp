@@ -186,7 +186,8 @@
            :no-named-stages
            :bad-type-for-buffer-stream-data
            :fbo-missing-outputs
-           :pipeline-invalid-null-stage))
+           :pipeline-invalid-null-stage
+           :invalid-gpu-function-args))
 
 (uiop:define-package :cepl.host
     (:use :cl :alexandria :cepl.build :cepl.defn)
@@ -539,6 +540,7 @@
            :c-array-pointer
            :c-array-dimensions
            :c-array-total-size
+           :c-array-byte-size
            :c-array-element-type
            :c-array-element-byte-size
            :c-array-free
@@ -652,6 +654,10 @@
            :g-pnt
            :g-pntc
            :g-pt
+           :g-pnb
+           :g-pncb
+           :g-pntb
+           :g-pntcb
            ;;---
            :make-g-pc
            :make-g-pn
@@ -659,6 +665,10 @@
            :make-g-pnt
            :make-g-pntc
            :make-g-pt
+           :make-g-pnb
+           :make-g-pncb
+           :make-g-pntb
+           :make-g-pntcb
            ;;---
            :bi-tangent
            :col
@@ -870,6 +880,7 @@
            :c-array-pointer
            :c-array-dimensions
            :c-array-total-size
+           :c-array-byte-size
            :c-array-element-type
            :c-array-element-byte-size
            :clone-c-array

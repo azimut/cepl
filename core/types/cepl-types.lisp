@@ -70,6 +70,9 @@
   (total-size
    (error "cepl: c-array must be created with total-size")
    :type c-array-index)
+  (byte-size
+   (error "cepl: c-array must be created with byte-size")
+   :type c-array-index)
   (element-type
    (error "cepl: c-array must be created with an element-type")
    :type symbol)
@@ -878,7 +881,7 @@
          (significand (ldb (byte 10 0) bits)))
     (if (= exponent 31)
         (cond ((not (zerop significand))
-               (the single-float (float-features:bits-single-float -4194304)))
+               (the single-float (float-features:bits-single-float #xFFC00000)))
               ((zerop sign) single-float-positive-infinity)
               (t single-float-negative-infinity))
         (%decode-half-float bits))))
