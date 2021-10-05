@@ -979,7 +979,14 @@ the width to see at what point the width reaches 0 or GL throws an error."
                              (texture-image-format texture)
                              width
                              height
-                             (texture-layer-count texture)))))
+                             (texture-layer-count texture)))
+            (:texture-cube-map-array
+             (tex-storage-3d texture-type
+                             (texture-mipmap-levels texture)
+                             (texture-image-format texture)
+                             width
+                             height
+                             (* 6 depth)))))
         (setf (texture-allocated-p texture) t))))
 
 (defun+ tex-storage-1d (target levels image-format width)

@@ -1229,7 +1229,9 @@ the value of :TEXTURE-FIXED-SAMPLE-LOCATIONS is not the same for all attached te
             ;; layer-face index. Thus it is the face within a layer, ordered as
             ;; above. So if you want to render to the 3rd layer, +z face, you would
             ;; set gl_Layer to (2 * 6) + 4, or 16.
-            (:texture-cube-map-array (error "attaching to cube-map-array textures has not been implemented yet"))))))))
+            (:texture-cube-map-array
+             (%gl:framebuffer-texture-layer :read-framebuffer attach-enum tex-id
+                                            level-num layer-num))))))))
 
 (defun+ fbo-attach-layered-set (cepl-context fbo layered-set attachment-name)
   ;; To attach images to an FBO, we must first bind the FBO to the context.
