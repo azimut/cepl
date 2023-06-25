@@ -6,12 +6,11 @@
   "Initialize CEPL and open a window. If the gl-version argument is nil then
    the default for the OS will be used."
   (initialize-cepl :gl-version gl-version)
-  #-slynk
-  (cepl.context::legacy-add-surface (cepl-context) "CEPL" width height t t
-                                    nil nil t gl-version)
-  #+slynk
-  (cepl.context::legacy-add-surface (cepl-context) "CEPL" width height nil t
-                                    nil nil t gl-version)
+  (if (uiop:getenv "APPDIR")
+      (cepl.context::legacy-add-surface (cepl-context) "CEPL" width height t t
+                                        nil nil t gl-version)
+      (cepl.context::legacy-add-surface (cepl-context) "CEPL" width height nil t
+                                        nil nil t gl-version))
   (format t "~%-----------------~%    CEPL-REPL    ~%-----------------~%")
   (cls))
 
